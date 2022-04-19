@@ -44,12 +44,14 @@ class Board extends React.Component {
 
     handleClick(str, i) {
       const output = this.state.output;
-      this.setState({output: output + str[i]})
+      if (this.state.output.length < 168) {
+        this.setState({output: output + str[i]})
+      }
     }
 
     handleBack() {
       const output = this.state.output;
-      if (this.state.output.length > 8) {
+      if (this.state.output.length > 8 ) {
         this.setState({output: output.slice(0, -1)});
       }
     }

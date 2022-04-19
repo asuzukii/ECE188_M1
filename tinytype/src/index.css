@@ -101,3 +101,10 @@ code {
   height: var(--size);
   width: var(--size);
 }
+
+.status {
+  height: 200px;
+  width: 300px;
+  word-wrap: break-word;
+  border: 1px;
+}
