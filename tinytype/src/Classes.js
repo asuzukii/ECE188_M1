@@ -71,7 +71,7 @@ class Board extends React.Component {
           <div>
             {this.renderLeftSquare('STU')}
             {this.renderMidSquare('VWX')}
-            {this.renderRightSquare('YZ!')}
+            {this.renderRightSquare('YZ_\u200e')}
             
           </div>
           <SpaceBar
