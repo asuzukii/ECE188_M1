@@ -26,6 +26,10 @@ code {
   position: relative;
   display: inline-block;
 }
+.mid-navigation {
+  position: relative;
+  display: inline-block;
+}
 .right-navigation {
   direction: rtl;
   position: relative;
@@ -43,35 +47,40 @@ code {
   z-index: 1;
 }
 
-.left-navigation a {
-  color: black;
-  padding: 12px;
-  margin: 0;
-  text-decoration: none;
-  display: block;
-}
-.left-navigation a:hover {
-  background-color: #ddd;
+.mid-left-navigation-content {
+  display: none;
+  position: absolute;
+  right: 40px;
+  background-color: #f1f1f1;
+  min-width: 40px;
+  min-height: 40px;
   border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.mid-right-navigation-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 .left-navigation:hover .navigation-content {
   display: inline-block;
 }
 
-.right-navigation a {
-  color: black;
-  padding: 12px;
-  margin: 0;
-  text-decoration: none;
-  display: block;
+.mid-navigation:hover .mid-left-navigation-content {
+  display: inline-block;
 }
-.right-navigation a:hover {
-  direction: rtl;
-  background-color: #ddd;
-  border-radius: 4px;
+.mid-navigation:hover .mid-right-navigation-content {
+  display: inline-block;
 }
+
 .right-navigation:hover .navigation-content {
-  direction: rtl;
   display: inline-block;
 }
 

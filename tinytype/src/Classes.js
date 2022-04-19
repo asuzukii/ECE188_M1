@@ -1,5 +1,6 @@
 import React from 'react';
 import LeftSquare from './LeftSquare';
+import MidSquare from './MidSquare';
 import RightSquare from './RightSquare';
 import './index.css';
 
@@ -29,6 +30,12 @@ class Board extends React.Component {
                 onClick={(i) => this.handleClick(str, i)}/>;
     }
     
+    renderMidSquare(str) {
+      return <MidSquare
+                value={str}
+                onClick={(i) => this.handleClick(str, i)}/>;
+    }
+
     renderRightSquare(str) {
       return <RightSquare
                 value={str}
@@ -53,23 +60,20 @@ class Board extends React.Component {
           <div className="status">{this.state.output}</div>
           <div>
             {this.renderLeftSquare('ABC')}
-            {this.renderLeftSquare('DEF')}
+            {this.renderMidSquare('DEF')}
             {this.renderRightSquare('GHI')}
           </div>
           <div>
             {this.renderLeftSquare('JKL')}
-            {this.renderLeftSquare('MNO')}
+            {this.renderMidSquare('MNO')}
             {this.renderRightSquare('PQR')}
           </div>
           <div>
             {this.renderLeftSquare('STU')}
-            {this.renderLeftSquare('VWX')}
-            {this.renderRightSquare('YZ_')}
+            {this.renderMidSquare('VWX')}
+            {this.renderRightSquare('YZ!')}
             
           </div>
-          <SpaceBar
-            value='Space'
-            onClick={() => this.handleClick(' ', 0)}/>
           <SpaceBar
             value='<='
             onClick={() => this.handleBack()}/>
