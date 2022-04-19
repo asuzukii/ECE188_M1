@@ -4,11 +4,11 @@ import MidSquare from './MidSquare';
 import RightSquare from './RightSquare';
 import './index.css';
 
-class SpaceBar extends React.Component {
+class BackBar extends React.Component {
   render() {
     return (
       <button
-        className="space"
+        className="back"
         onClick={() => {this.props.onClick()}}>
         {this.props.value}
       </button>
@@ -74,7 +74,7 @@ class Board extends React.Component {
             {this.renderRightSquare('YZ_\u200e')}
             
           </div>
-          <SpaceBar
+          <BackBar
             value='<='
             onClick={() => this.handleBack()}/>
         </div>
@@ -82,16 +82,5 @@ class Board extends React.Component {
     }
 }
 
-class Game extends React.Component {
-    render() {
-        return (
-        <div className="game">
-            <div className="game-board">
-            <Board />
-            </div>
-        </div>
-        );
-    }
-}
 
-export default Game;
+export default Board;
