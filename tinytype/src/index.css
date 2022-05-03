@@ -17,15 +17,26 @@ code {
     monospace;
 }
 
+#myCanvas {
+  background-color: antiquewhite;
+}
+
+
 .square {
   height: var(--size);
   width: var(--size);
   font-size: 10px;
 }
 
+.switch {
+  height: 20px;
+  width: calc(1.5 * var(--size));
+  font-size: 10px;
+}
+
 .back {
   height: 20px;
-  width: calc(3 * var(--size));
+  width: calc(1.5 * var(--size));
   font-size: 10px;
 }
 
@@ -103,7 +114,7 @@ code {
 }
 
 .status {
-  height: 200px;
+  height: 100px;
   width: 300px;
   word-wrap: break-word;
   border: 1px;
