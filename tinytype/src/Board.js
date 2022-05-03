@@ -6,6 +6,8 @@ import DollarRecognizer from './Stroke';
 import Point from './Point';
 import './index.css';
 
+var Grapheme = require('grapheme-splitter');
+
 class BackBar extends React.Component {
   render() {
     return (
@@ -63,8 +65,6 @@ class Board extends React.Component {
 			document.onmousedown = () => false; // disable drag-select
 			if (e.button <= 1) {
 				this.setState({isDown: true});
-        // let x = e.pageX - canvas.offsetLeft;
-        // let y = e.pageY - canvas.offsetTop;
         let x = e.clientX - canvas.offsetLeft;
         let y = e.clientY - canvas.offsetTop;
 				if (this.state.len >= 0) {
@@ -74,8 +74,6 @@ class Board extends React.Component {
         this.setState({len: 1});
         this._g.beginPath();
 			  this._g.moveTo(x, y);
-        console.log(this.state.points)
-			} else if (e.button === 2) {
 			}
 		}
 
@@ -133,7 +131,6 @@ class Board extends React.Component {
 			}
       this.setState({points: []});
       this.setState({len: 0});
-      console.log(this.state.points);
 		}
 
     drawText(str) {
@@ -190,9 +187,13 @@ class Board extends React.Component {
     }
 
     handleBack() {
-      const output = this.state.output;
-      if (this.state.output.length > 8 ) {
-        this.setState({output: output.slice(0, -1)});
+      var splitter = new Grapheme();
+
+      if (splitter.splitGraphemes(this.state.output).length > 8 ) {
+        let new_arr = splitter.splitGraphemes(this.state.output);
+        let popped = new_arr.pop();
+        console.log(new_arr);
+        this.setState({output: new_arr.join('')});
       }
     }
 
