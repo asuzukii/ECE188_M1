@@ -6,8 +6,10 @@ import DollarRecognizer from './Stroke';
 import Point from './Point';
 import './index.css';
 
+// some other stuff 
 var Grapheme = require('grapheme-splitter');
 
+/* The Backbar for the UI */
 class BackBar extends React.Component {
   render() {
     return (
@@ -20,6 +22,7 @@ class BackBar extends React.Component {
   }
 }
 
+/* The Switch Button that changes the keys for the UI */
 class Switch extends React.Component {
   render() {
     return (
@@ -37,7 +40,7 @@ class Board extends React.Component {
       super(props);
       this.state = {
         output: 'Output: ',
-        emojiState: false,
+        KeyBoardState: 0,
         isDown: false,
         points: [],
         len: 0
@@ -51,15 +54,18 @@ class Board extends React.Component {
     }
     
     mouseDownEvent(e) {
+      // each time the canvas is clicked, new Dollar recognizer is created
       this._r = new DollarRecognizer();
       var canvas = document.getElementById('myCanvas');
+      // mostly configs for the brushstroke
 			this._g = canvas.getContext('2d');
 			this._g.fillStyle = "rgb(0,0,225)";
 			this._g.strokeStyle = "rgb(0,0,225)";
 			this._g.lineWidth = 3;
 			this._g.font = "12px Gentilis";
-			this._rc = this.getCanvasRect(canvas); // canvas rect on page
 			this._g.fillStyle = "rgb(255,255,136)";
+      // canvas rect dims on page
+      this._rc = this.getCanvasRect(canvas); 
       
 			document.onselectstart = () => false; // disable drag-select
 			document.onmousedown = () => false; // disable drag-select
@@ -77,11 +83,10 @@ class Board extends React.Component {
 			}
 		}
 
+    /* */
     mouseMoveEvent(e) {
 			if (this.state.isDown) {
         var canvas = document.getElementById('myCanvas');
-        // let x = e.pageX - canvas.offsetLeft;
-        // let y = e.pageY - canvas.offsetTop;
         let x = e.clientX - canvas.offsetLeft;
         let y = e.clientY - canvas.offsetTop;
         this.setState(previousState => ({points: [...previousState.points, new Point(x, y)]}));
@@ -98,6 +103,7 @@ class Board extends React.Component {
         this.setState({isDown: false});
 				if (this.state.len >= 10) {
 					var result = this._r.Recognize(this.state.points);
+          // switch case for the DollarRecognizer outputs -> emoji
           switch (result.Name) {
             case 'frown':
               if (this.state.output.length < 168) {
@@ -190,70 +196,100 @@ class Board extends React.Component {
       var splitter = new Grapheme();
 
       if (splitter.splitGraphemes(this.state.output).length > 8 ) {
+        // splits the arr to emoji-considerate chunks
         let new_arr = splitter.splitGraphemes(this.state.output);
-        let popped = new_arr.pop();
+        new_arr.pop();
         console.log(new_arr);
         this.setState({output: new_arr.join('')});
       }
     }
 
-    handleEmoji() {
-      this.setState({emojiState: !this.state.emojiState});
+    handleKeyBoard() {
+      this.setState({KeyBoardState: this.state.KeyBoardState === 2 ? 0 : this.state.KeyBoardState + 1});
     }
 
     
     render() {
-  
-      return this.state.emojiState ? (
-        <div>
-          <div className="status">{this.state.output}</div>
-          <div>
-            {this.renderLeftSquare('ABC')}
-            {this.renderMidSquare('DEF')}
-            {this.renderRightSquare('GHI')}
-          </div>
-          <div>
-            {this.renderLeftSquare('JKL')}
-            {this.renderMidSquare('MNO')}
-            {this.renderRightSquare('PQR')}
-          </div>
-          <div>
-            {this.renderLeftSquare('STU')}
-            {this.renderMidSquare('VWX')}
-            {this.renderRightSquare('YZ_\u200e')}
-          </div>
-          <div>
-            <Switch
-            value='Emojis'
-            onClick={() => this.handleEmoji()}/>
-            <BackBar
-            value='<='
-            onClick={() => this.handleBack()}/>
-          </div>
-          
-        </div>
-      ) : (
-        <div id="base">
-          <div className="status">{this.state.output}</div>
-            <canvas id="myCanvas"
-            height={'105px'}
-            width={'105px'}
-            onMouseDown={(e) => this.mouseDownEvent(e)}
-            onMouseMove={(e) => this.mouseMoveEvent(e)}
-            onMouseUp={(e) => this.mouseUpEvent(e)}
-            />
-          
-          <div>
-            <Switch
-            value='Aa'
-            onClick={() => this.handleEmoji()}/>
-            <BackBar
-            value='<='
-            onClick={() => this.handleBack()}/>
-          </div>
-          
-        </div>
-      );
+      switch (this.state.KeyBoardState) {
+        case 0:
+          return (
+            <div>
+              <div className="status">{this.state.output}</div>
+              <div>
+                {this.renderLeftSquare('ABC')}
+                {this.renderMidSquare('DEF')}
+                {this.renderRightSquare('GHI')}
+              </div>
+              <div>
+                {this.renderLeftSquare('JKL')}
+                {this.renderMidSquare('MNO')}
+                {this.renderRightSquare('PQR')}
+              </div>
+              <div>
+                {this.renderLeftSquare('STU')}
+                {this.renderMidSquare('VWX')}
+                {this.renderRightSquare('YZ_\u200e')}
+              </div>
+              <div>
+                <Switch
+                value='Emojis'
+                onClick={() => this.handleKeyBoard()}/>
+                <BackBar
+                value='<='
+                onClick={() => this.handleBack()}/>
+              </div>
+              
+            </div>
+          );
+        case 1:
+          return (
+            <div id="base">
+              <div className="status">{this.state.output}</div>
+              <canvas id="myCanvas"
+              height={'105px'}
+              width={'105px'}
+              onMouseDown={(e) => this.mouseDownEvent(e)}
+              onMouseMove={(e) => this.mouseMoveEvent(e)}
+              onMouseUp={(e) => this.mouseUpEvent(e)}
+              />
+              <div>
+                <Switch
+                value='📷'
+                onClick={() => this.handleKeyBoard()}/>
+                <BackBar
+                value='<='
+                onClick={() => this.handleBack()}/>
+              </div>
+            </div>
+          );
+        case 2:
+          return (
+            <div>
+              <div className="status">{this.state.output}</div>
+              <div>
+                {this.renderLeftSquare('ABC')}
+                {this.renderMidSquare('DEF')}
+                {this.renderRightSquare('GHI')}
+              </div>
+              <div>
+                {this.renderLeftSquare('STU')}
+                {this.renderMidSquare('VWX')}
+                {this.renderRightSquare('YZ_\u200e')}
+              </div>
+              <div>
+                <Switch
+                value='Aa'
+                onClick={() => this.handleKeyBoard()}/>
+                <BackBar
+                value='<='
+                onClick={() => this.handleBack()}/>
+              </div>
+              
+            </div>
+          );
+        default:
+          break;
+      }
     }
 }
 
