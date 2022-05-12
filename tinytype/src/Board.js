@@ -3,6 +3,7 @@ import LeftSquare from './LeftSquare';
 import MidSquare from './MidSquare';
 import RightSquare from './RightSquare';
 import DollarRecognizer from './Stroke';
+import Gesture from './Gesture';
 import Point from './Point';
 import './index.css';
 
@@ -40,7 +41,7 @@ class Board extends React.Component {
       super(props);
       this.state = {
         output: 'Output: ',
-        KeyBoardState: 0,
+        KeyBoardState: 2,
         isDown: false,
         points: [],
         len: 0
@@ -51,8 +52,13 @@ class Board extends React.Component {
       this.mouseDownEvent = this.mouseDownEvent.bind(this);
       this.mouseMoveEvent = this.mouseMoveEvent.bind(this);
       this.mouseUpEvent = this.mouseUpEvent.bind(this);
+  
     }
-    
+
+    callbackFunction = (childData) => {
+      this.setState({message: childData})
+    }
+
     mouseDownEvent(e) {
       // each time the canvas is clicked, new Dollar recognizer is created
       this._r = new DollarRecognizer();
@@ -199,7 +205,6 @@ class Board extends React.Component {
         // splits the arr to emoji-considerate chunks
         let new_arr = splitter.splitGraphemes(this.state.output);
         new_arr.pop();
-        console.log(new_arr);
         this.setState({output: new_arr.join('')});
       }
     }
@@ -266,16 +271,8 @@ class Board extends React.Component {
           return (
             <div>
               <div className="status">{this.state.output}</div>
-              <div>
-                {this.renderLeftSquare('ABC')}
-                {this.renderMidSquare('DEF')}
-                {this.renderRightSquare('GHI')}
-              </div>
-              <div>
-                {this.renderLeftSquare('STU')}
-                {this.renderMidSquare('VWX')}
-                {this.renderRightSquare('YZ_\u200e')}
-              </div>
+              <Gesture parentCallback = {this.callbackFunction}
+                        value = {this.state.output}/>
               <div>
                 <Switch
                 value='Aa'
@@ -284,8 +281,8 @@ class Board extends React.Component {
                 value='<='
                 onClick={() => this.handleBack()}/>
               </div>
-              
             </div>
+            
           );
         default:
           break;
@@ -295,5 +292,8 @@ class Board extends React.Component {
 
 
 export default Board;
+
+
+  
 
 
